@@ -15,9 +15,11 @@
                     <table class="table" id="myTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th class="text-center">Photo</th>
+                                <th class="text-center">Title</th>
                                 <th class="text-center">Description</th>
                                 <th class="text-center">Purpose</th>
-                                <th class="text-center">Date Created</th>
+                                <th class="text-center">Date of Activity</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -34,6 +36,15 @@
 <?php include "modal/modal_announcements.php"; ?>
 
 <script>
+    function announcement_upload(announcement_id) {
+        $('#announcement_id').val(announcement_id)
+        $('#upload_modal').modal({
+            backdrop: 'static',
+            keyboard: false
+        })
+        $('#upload_modal').modal('show');
+    }
+
     function add_activity() {
         $('#add_modal').modal({
             backdrop: 'static',
@@ -71,32 +82,33 @@
     }
 
     function edit_activity(activity_id) {
-      $.ajax({
-        url: 'announcements/edit',
-        type: 'POST',
-        data: {
-            activity_id: activity_id
+        $.ajax({
+            url: 'announcements/edit',
+            type: 'POST',
+            data: {
+                activity_id: activity_id
 
-        },
-        dataType: 'JSON',
-        beforeSend: function() {
+            },
+            dataType: 'JSON',
+            beforeSend: function() {
 
-        }
-      }).done(function(res) {
+            }
+        }).done(function(res) {
 
-        $("#edit_id").val(res.activity_id);
-        $("#edit_desc").val(res.activity_desc);
-        $("#edit_purpose").val(res.purpose);
-        $("#edit_date").val(res.date_inserted);
-        $('#edit_modal').modal({
-            backdrop: 'static',
-            keyboard: false
+            $("#edit_id").val(res.activity_id);
+            $("#edit_desc").val(res.activity_desc);
+            $("#edit_title").val(res.title);
+            $("#edit_purpose").val(res.purpose);
+            $("#edit_date").val(res.date_inserted);
+            $('#edit_modal').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            $('#edit_modal').modal('show');
+
+        }).fail(function() {
+            console.log("FAIL");
         })
-        $('#edit_modal').modal('show');
-
-      }).fail(function() {
-        console.log("FAIL");
-      })
     }
 
 
@@ -119,6 +131,14 @@
                 {
                     data: [3],
                     "className": "text-center"
+                },
+                {
+                    data: [4],
+                    "className": "text-center"
+                },
+                {
+                    data: [5],
+                    "className": "text-center"
                 }
             ]
 
@@ -130,7 +150,8 @@
 
             let description = $('#add_desc').val()
             let purpose     = $('#add_purpose').val()
-            let date        = $('add_date').val()
+            let date_s      = $('#add_date').val()
+            let title       = $('#add_title').val()
 
             $.ajax({
                 url: 'announcements/add',
@@ -138,7 +159,8 @@
                 data: {
                     description : description,
                     purpose     : purpose,
-                    date        : date
+                    date_s      : date_s,
+                    title       : title
                 },
                 dataType: 'JSON',
                 beforeSend: function() {
@@ -158,6 +180,88 @@
             }).fail(function() {
                 console.log("FAIL");
             })
+        })
+
+
+        $('#form_udpate').submit(function(e) {
+            e.preventDefault();
+
+            let description     = $('#edit_desc').val()
+            let purpose         = $('#edit_purpose').val()
+            let datee           = $('#edit_date').val()
+            let title           = $('#edit_title').val()
+            let announcement_id = $('#edit_id').val()
+
+            $.ajax({
+                url: 'announcements/update',
+                type: 'POST',
+                data: {
+                    description : description,
+                    purpose     : purpose,
+                    date        : datee,
+                    title       : title,
+                    announcement_id : announcement_id
+                },
+                dataType: 'JSON',
+                beforeSend: function() {
+
+                }
+            }).done(function(res) {
+                if (res.res_success == 1) {
+                    swal("Success Updated", "", "success");
+                    var currentPageIndex = table.page.info().page;
+                    table.ajax.reload(function() {
+                        table.page(currentPageIndex).draw(false);
+                    }, false);
+                    $('#edit_modal').modal('hide');
+                } else {
+                    alert(res.res_message);
+                }
+            }).fail(function() {
+                console.log("FAIL");
+            })
+        })
+
+
+        //============================================ UPLOAD PICTURE =========================================>
+
+        $("#upload_form").on("submit", function(e) {
+            e.preventDefault();
+
+            var fd = new FormData($("#upload_form")[0]);
+            var files = $("#file")[0].files;
+
+            for (item of fd) {
+                console.log(item[0], item[1]);
+            }
+            // Check file selected or not
+            if (files.length > 0) {
+                fd.append('file', files[0]);
+
+
+                $.ajax({
+                    url: 'announcements/announcement_upload',
+                    type: 'post',
+                    data: fd,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response != 0) {
+                            alert('Successfully Uploaded');
+                            var currentPageIndex = table.page.info().page;
+                            table.ajax.reload(function() {
+                                table.page(currentPageIndex).draw(false);
+                            }, false);
+
+                            $('#upload_modal').modal('hide');
+                        } else {
+                            alert('file not uploaded');
+                        }
+                    },
+                });
+            } else {
+                alert("Please select a file.");
+            }
         })
 
 

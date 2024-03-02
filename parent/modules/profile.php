@@ -1,5 +1,6 @@
 <?php
 include "../header.php";
+include "profiles/profile_view.php";
 
 $sql = "SELECT education_id, description FROM tbl_educational_level";
 $result = mysqli_query($db, $sql) or die("Bad SQL: $sql");
@@ -62,23 +63,23 @@ $opt4 .= "</select>";
                                 <div class="row">
                                     <div class="form-group col-12 col-md-4">
                                         <label>First Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="fname" id="fname" value="<?php echo $_SESSION['solo_parent']['fname']; ?>" required>
+                                        <input type="text" class="form-control" name="fname" id="fname" value="<?php echo $fname; ?>" required>
                                     </div>
                                     <div class="form-group col-12 col-md-4">
                                         <label>Middle Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="mname" id="mname" value="<?php echo $_SESSION['solo_parent']['mname']; ?>" required>
+                                        <input type="text" class="form-control" name="mname" id="mname" value="<?php echo $mname; ?>" required>
                                     </div>
                                     <div class="form-group col-12 col-md-4">
                                         <label>Last Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="lname" id="lname" value="<?php echo $_SESSION['solo_parent']['lname']; ?>" required>
+                                        <input type="text" class="form-control" name="lname" id="lname" value="<?php echo $lname; ?>" required>
                                     </div>
                                     <div class="form-group col-12 col-md-4">
                                         <label>Age<span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="age" id="age" required value="<?php echo $_SESSION['solo_parent']['age']; ?>">
+                                        <input type="number" class="form-control" name="age" id="age" required value="<?php echo $age; ?>">
                                     </div>
                                     <div class="form-group col-12 col-md-4">
                                         <label>Birthday<span class="text-danger">*</span></label>
-                                        <input type="date" class="form-control" name="bday" id="bday" required value="<?php echo $_SESSION['solo_parent']['bday']; ?>">
+                                        <input type="date" class="form-control" name="bday" id="bday" required value="<?php echo $bday; ?>">
                                     </div>
                                     <div class="form-group col-12 col-md-4">
                                         <label>Gender<span class="text-danger">*</span></label>
@@ -102,19 +103,19 @@ $opt4 .= "</select>";
                                     </div>
                                     <div class="form-group col-12 col-md-4">
                                         <label>Phone<span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="phone" id="phone" value="<?php echo $_SESSION['solo_parent']['phone']; ?>" maxlength="11.0" step="0.01" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required>
+                                        <input type="number" class="form-control" name="phone" id="phone" value="<?php echo $phone; ?>" maxlength="11.0" step="0.01" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required>
                                     </div>
                                     <div class="form-group col-12 col-md-4">
                                         <label>Email<span class="text-danger">*</span></label>
-                                        <input type="email" class="form-control" name="email" id="email" required value="<?php echo $_SESSION['solo_parent']['email']; ?>">
+                                        <input type="email" class="form-control" name="email" id="email" required value="<?php echo $email; ?>">
                                     </div>
                                     <div class="form-group col-12 col-md-4">
                                         <label>Occupation<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="occupation" id="occupation" required value="<?php echo $_SESSION['solo_parent']['occupation']; ?>">
+                                        <input type="text" class="form-control" name="occupation" id="occupation" required value="<?php echo $occupation; ?>">
                                     </div>
                                     <div class="form-group col-12 col-md-4">
                                         <label>Religion<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="religion" id="religion" required value="<?php echo $_SESSION['solo_parent']['religion']; ?>">
+                                        <input type="text" class="form-control" name="religion" id="religion" required value="<?php echo $religion; ?>">
                                     </div>
                                   
                                 </div><br>
@@ -172,14 +173,18 @@ include "../footer.php";
 <script>
     var countNew = 1;
     var education = `<?php echo $opt1; ?>`;
-    var parent_gender = `<?php echo $_SESSION['solo_parent']['gender']; ?>`;
-    let my_barangay = `<?php echo $_SESSION['solo_parent']['barangay_id']; ?>`;
-    let my_education_level = `<?php echo $_SESSION['solo_parent']['education_id']; ?>`;
-    let my_income = `<?php echo $_SESSION['solo_parent']['income_id']; ?>`;
+
+    var parent_gender        = `<?php echo $gender; ?>`;
+    let my_barangay          = `<?php echo $barangay; ?>`;
+    let my_education_level   = `<?php echo $education; ?>`;
+    let my_income            = `<?php echo $income; ?>`;
     $('#gender').val(parent_gender)
     $('#barangay').val(my_barangay)
     $('#education_level').val(my_education_level)
     $('#income').val(my_income)
+
+
+
 
     function remove(id, type) {
 

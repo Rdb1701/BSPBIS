@@ -7,6 +7,7 @@ $activity_id  = mysqli_real_escape_string($db, trim($_POST['activity_id']));
 $activity_desc  = "";
 $purpose        = "";
 $date_inserted  = "";
+$title          = "";
 
 
 $query = "
@@ -22,13 +23,15 @@ if (mysqli_num_rows($result) > 0) {
 
   $activity_desc = $row['activity_desc'];
   $purpose       = $row['purpose'];
-  $date_inserted = $row['date_insert'];
+  $date_inserted = $row['date_activity'];
+  $title         = $row['title'];
 
 }
 
 $data['activity_id']   = $activity_id;
 $data['activity_desc'] = $activity_desc; 
 $data['purpose']       = $purpose;
+$data['title']         = $title;
 $data['date_inserted'] = $date_inserted;
 
 

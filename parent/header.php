@@ -56,7 +56,7 @@ if (!$_SESSION['solo_parent']) {
                     </li>
                     <li class="sidebar-item">
                         <a href="../../includes/logout" class="sidebar-link">
-                            <i class="fa-solid fa-lock pe-2"></i>
+                            <i class="fa-solid fa-sign-out-alt pe-2"></i>
                            Logout
                         </a>
                     </li>
